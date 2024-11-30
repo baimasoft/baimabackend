@@ -1,0 +1,6 @@
+{
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.completeFunctionParens": true,
+    "python.analysis.importStrategy": "useBundled",
+    "python.languageServer": "Pylance"
+}
