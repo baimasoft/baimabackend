@@ -22,6 +22,7 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(255))  # 指定长度为 255
+    username1 = Column(String(255))  # 指定长度为 255
     app_id = Column(Integer, ForeignKey('applications.id'),nullable=False)  # 指定长度为 255 并匹配 Application 表
     wxid = Column(String(255), unique=True)  # 指定长度为 255
     session_key = Column(String(255))  # 指定长度为 255
