@@ -34,4 +34,4 @@ jobs:
           docker pull devgho/baimabackend:latest
           docker stop baimabackend || true
           docker rm baimabackend || true
-          docker run -d --name baimabackend -p 8000:8000 devgho/baimabackend:latest
+          docker run -d --add-host host.docker.internal:host-gateway --name baimabackend -p 8000:8000 devgho/baimabackend:latest
