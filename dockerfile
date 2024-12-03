@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 8000
 
 # 创建一个启动脚本
-RUN chmod +x entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
 # 使用启动脚本作为默认命令
-CMD ["./entrypoint.sh"]
+CMD ["/app/entrypoint.sh"]
