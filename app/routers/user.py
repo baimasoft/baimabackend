@@ -1,6 +1,7 @@
 import base64
 import json
-from fastapi import APIRouter, HTTPException, Depends, Request
+import re
+from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 import requests
 import configparser
@@ -8,9 +9,8 @@ from app.database import get_db
 from sqlalchemy.orm import Session
 from app.models import User
 from datetime import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator, validator
 import bcrypt
-from typing import Optional
 from app.routers.jwt import create_access_token, get_current_active_user
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import unpad
@@ -40,16 +40,36 @@ class WeChatLoginRequest(BaseModel):
 class RegisterRequest(BaseModel):
     username: str
     password: str
-    phone_number: Optional[str] = None
+    phone_number: str = Field(None, description="Optional phone number")
+    @field_validator('username')
+    def validate_username(cls, v):
+        if len(v) < 5:
+            raise ValueError('用户名至少五位')
+        return v
+    @field_validator('password')
+    def validate_password(cls, v):
+        if len(v) < 6:
+            raise ValueError('密码至少六位')
+        if not re.search(r'[a-zA-Z]', v):
+            raise ValueError('密码至少要包含字母')
+        if not re.search(r'\d', v):
+            raise ValueError('密码至少要包含数字')
+        return v
+    @field_validator('phone_number')
+    def validate_phone_number(cls, v):
+        if v is not None and not re.match(r'^\d{11}$', v):
+            raise ValueError('电话号码必须是11位数字')
+        return v
 
 class UserResponse(BaseModel):
     id: int
     username: str
-    phone_number: Optional[str] = None
+    phone_number: str = Field(None, description="电话号码，选填")
     created_at: datetime
     updated_at: datetime
-    session_key: Optional[str] = None
-    wxid: Optional[str] = None
+
+    class Config:
+        from_attributes = True
 
 class LoginResponse(BaseModel):
     message: str

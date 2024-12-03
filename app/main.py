@@ -4,7 +4,6 @@ from app.models import Base
 from app.database import engine
 from app.admin import init_admin  # 导入初始化 admin 的函数
 from app.routers.user import router as user_router
-from app.routers.address import router as address_router
 from app.routers.order import router as order_router
 
 app = FastAPI()
@@ -21,7 +20,6 @@ app.add_middleware(
 )
 
 app.include_router(user_router)
-app.include_router(address_router)
 app.include_router(order_router)
 init_admin(app)
 

@@ -27,7 +27,7 @@ class OrderResponse(OrderBase):
     updated_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
         
 # 定义退款请求模型
 class RefundRequest(BaseModel):
