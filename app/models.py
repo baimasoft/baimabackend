@@ -9,6 +9,7 @@ class Application(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     app_name = Column(String(255), unique=True, nullable=False)  # 指定长度为 255
+    wechat_app_id = Column(String(255))
     description = Column(String(255))  # 指定长度为 255
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

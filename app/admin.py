@@ -38,7 +38,7 @@ class OrderView(ModelView, model=Order):
     column_list = [Order.id, Order.user_id,Order.order_info,Order.price, Order.status,Order.user, Order.created_at, Order.updated_at]
     
 class ApplicationView(ModelView,model=Application):
-    column_list = [Application.id, Application.app_name, Application.description, Application.users]
+    column_list = [Application.id, Application.app_name, Application.description,Application.wechat_app_id, Application.users]
     
 def init_admin(app: FastAPI):
     authentication_backend = AdminAuth(secret_key="...")

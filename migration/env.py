@@ -1,3 +1,4 @@
+import configparser
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
@@ -6,11 +7,18 @@ from sqlalchemy import pool
 from alembic import context
 
 from app import models
+from common import in_docker
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-
+config1 = configparser.ConfigParser()
+config1.read("config.ini")
+if in_docker():
+    url = config1.get("database", "DOCKER_URL")
+else:
+    url = config1.get("database","LOCAL_URL")
+config.set_main_option("sqlalchemy.url", url)
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:
@@ -40,7 +48,7 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+
     context.configure(
         url=url,
         target_metadata=target_metadata,
